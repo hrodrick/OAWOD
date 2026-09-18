@@ -1,19 +1,26 @@
 FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV BUN_INSTALL=/usr/local
+ENV PATH="/usr/local/bin:${PATH}"
 
+# Base development tools
 RUN apt-get update && apt-get install -y \
+    ca-certificates \
     curl \
     git \
     wget \
     gpg \
-    ca-certificates \
     build-essential \
     python3 \
     python3-pip \
     tmux \
     unzip \
-    && mkdir -p -m 755 /etc/apt/keyrings \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# GitHub CLI repository
+RUN mkdir -p -m 755 /etc/apt/keyrings \
     && wget -nv -O /etc/apt/keyrings/githubcli-archive-keyring.gpg \
        https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
@@ -25,17 +32,16 @@ RUN apt-get update && apt-get install -y \
 
 # Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
-    && apt-get install -y nodejs
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
 # Bun
 RUN curl -fsSL https://bun.sh/install | bash
 
-ENV PATH="/root/.bun/bin:${PATH}"
-
 # OpenCode
 RUN npm install -g opencode-ai
 
-# OmO Ultimate
+# OmO Ultimate / OpenCode edition
 RUN bunx oh-my-openagent install \
     --no-tui \
     --platform=opencode \
@@ -55,4 +61,4 @@ RUN bunx oh-my-openagent install \
 
 WORKDIR /workspace
 
-CMD ["bash"]
+CMD ["sleep", "infinity"]
