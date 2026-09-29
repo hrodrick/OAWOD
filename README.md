@@ -122,123 +122,14 @@ C:\docker\omo
 
 ## 5. Create `Dockerfile`
 
-Create `C:\docker\omo\Dockerfile`:
-
-```dockerfile
-FROM ubuntu:24.04
-
-ENV DEBIAN_FRONTEND=noninteractive
-ENV BUN_INSTALL=/usr/local
-ENV PATH="/usr/local/bin:${PATH}"
-
-# Base development tools
-RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    curl \
-    git \
-    wget \
-    gpg \
-    build-essential \
-    python3 \
-    python3-pip \
-    tmux \
-    unzip \
-    jq \
-    && rm -rf /var/lib/apt/lists/*
-
-# GitHub CLI repository
-RUN mkdir -p -m 755 /etc/apt/keyrings \
-    && wget -nv -O /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-       https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-    && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
-       > /etc/apt/sources.list.d/github-cli.list \
-    && apt-get update \
-    && apt-get install -y gh \
-    && rm -rf /var/lib/apt/lists/*
-
-# Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
-    && apt-get install -y nodejs \
-    && rm -rf /var/lib/apt/lists/*
-
-# Bun
-RUN curl -fsSL https://bun.sh/install | bash
-
-# OpenCode
-RUN npm install -g opencode-ai
-
-# OmO Ultimate / OpenCode edition
-RUN bunx oh-my-openagent install \
-    --no-tui \
-    --platform=opencode \
-    --claude=no \
-    --openai=no \
-    --gemini=no \
-    --copilot=no \
-    --opencode-zen=no \
-    --zai-coding-plan=no \
-    --kimi-for-coding=no \
-    --opencode-go=no \
-    --bailian-coding-plan=no \
-    --minimax-cn-coding-plan=no \
-    --minimax-coding-plan=no \
-    --vercel-ai-gateway=no \
-    --skip-auth
-
-WORKDIR /workspace
-
-CMD ["sleep", "infinity"]
-```
-
-> The provider flags above mean OmO is installed without configuring paid cloud-provider subscriptions. Add/change them later if required.
+Already done. See Dockerfile in project's root.
+> Note: The provider flags above mean OmO is installed without configuring paid cloud-provider subscriptions. Add/change them later if required.
 
 ---
 
 ## 6. Create `compose.yaml`
 
-Create `C:\docker\omo\compose.yaml`:
-
-```yaml
-services:
-  omo:
-    build:
-      context: .
-      dockerfile: Dockerfile
-
-    container_name: omo
-
-    stdin_open: true
-    tty: true
-
-    volumes:
-      - omo-workspace:/workspace
-      - omo-home:/root
-
-    networks:
-      - omo-network
-
-    restart: unless-stopped
-
-volumes:
-  omo-workspace:
-  omo-home:
-
-networks:
-  omo-network:
-    driver: bridge
-```
-
-This intentionally does **not** mount:
-
-```text
-/var/run/docker.sock
-C:\
-your Windows home directory
-your Windows SSH directory
-```
-
-The container is also not privileged and does not have direct GPU access.
+Already done. See compose.yaml in project's root.
 
 ---
 
