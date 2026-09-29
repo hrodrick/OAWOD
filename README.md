@@ -373,6 +373,11 @@ Use this configuration:
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
+
+  "plugin": [
+    "oh-my-openagent@latest"
+  ],
+
   "provider": {
     "dmr": {
       "npm": "@ai-sdk/openai-compatible",
@@ -381,13 +386,14 @@ Use this configuration:
         "baseURL": "http://model-runner.docker.internal/engines/v1"
       },
       "models": {
-        "hf.co/bartowski/Qwen_Qwen3.5-9B-GGUF:Q8_0": {
-          "name": "Qwen3.5 9B Q8_0"
+        "huggingface.co/bartowski/openai_gpt-oss-20b-gguf:Q4_K_M": {
+          "name": "openai_gpt oss 20B Q4_K_M"
         }
       }
     }
   },
-  "model": "dmr/hf.co/bartowski/Qwen_Qwen3.5-9B-GGUF:Q8_0"
+
+  "model": "dmr/huggingface.co/bartowski/openai_gpt-oss-20b-gguf:Q4_K_M"
 }
 ```
 
@@ -414,7 +420,7 @@ Confirm that:
 
 ```text
 Docker Model Runner
-└── Qwen3.5 9B Q8_0
+└── openai_gpt oss 20B Q4_K_M
 ```
 
 is available.
