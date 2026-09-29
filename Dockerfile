@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     tmux \
     unzip \
     jq \
+    nano \
     && rm -rf /var/lib/apt/lists/*
 
 # GitHub CLI repository

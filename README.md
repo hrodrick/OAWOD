@@ -342,7 +342,7 @@ The response should include the Qwen model.
 
 ---
 
-## 11. Configure OpenCode to use Docker Model Runner
+## 11.1. Configure OpenCode to use Docker Model Runner
 
 Create the global OpenCode configuration directory:
 
@@ -399,6 +399,19 @@ Use this configuration:
 
 If the `/models` API reports a different model ID, replace the model key and default model value with that exact ID.
 
+## 11.2. Configure Omo to disable tools that do not work
+Some tools and MCPs may not work depending on your local model. For example, for `bartowski/openai_gpt-oss-20b-gguf:Q4_K_M` the `websearch api mcp` throws a parsing error when making any request to the AI.
+```bash
+nano ~/.omo/omo.jsonc
+```
+Add this block right below the schema: 
+```json
+"$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/omo.schema.json",`
+"disabled_mcps": [
+  "websearch",
+],
+// rest of config
+```
 ---
 
 ## 12. Start OpenCode
